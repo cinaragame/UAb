@@ -15,18 +15,24 @@ typedef struct node
 
 Lista *Adiciona(Lista *lista, int n)
 {
+	//create node
+	Lista *pt = lista;
+	if(pt != NULL)
+	{	//enquanto o node para qual pt nao é o ultimo, iterar
+		while(pt->next != NULL)
+		{
+			pt = pt->next;
+		}
+	}
 	Lista *aux = malloc(sizeof(Lista));
 	if(aux != NULL)
 	{	//adicionar ao final da lista
 		(*aux).n = n;
 		(*aux).next = NULL; //aux passa a ser o ultimo
-		if(lista == NULL)
-			lista = aux; //se for o primeiro elemento da lista
+		if(pt == NULL)
+			return aux; //se for o primeiro elemento da lista
 		else
-		{
-			aux->next = lista;
-			lista = aux;
-		}
+			(*pt).next = aux;	//último passa a apontar para aux
 	}
 
 	return lista;
