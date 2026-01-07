@@ -8,18 +8,18 @@ int main(int argc, char **argv)
 	char str[MAXSTR], *pt, c;
 	int count = 0, line = 1;
 
-	/*if(argc <= 1)
+	if(argc <= 1)
 	{
 		printf("Utilização: more <ficheiro>\n");
 		return 1;
-	}*/
+	}
 
-	f = fopen(argv[1], "r");
+	f = fopen(argv[1], "rb");
 
 	if(f == NULL)
 		return 1;
 	
-	while(fread(&c, sizeof(c), 1, stdin) != 0)
+	while(fread(&c, sizeof(c), 1, f) != 0)
 	{
 		if(count == 0)		//prints number of new line
 		{
