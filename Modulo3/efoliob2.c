@@ -1,8 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct camara
 {
-	char *name[100];
+	char name[100];
 	struct camara *next;
 } camara;
 
@@ -15,36 +17,42 @@ enum
 
 int Parse(char *input);
 
-void Input(*camara camaras)
+int Input(char input[])
 {
-	char input[100];
 	int parse = 0; //check enumerate for return value
 	
 	scanf("%[^\n]%*c", input);	//pattern match all characters that are not new line
 	parse = Parse(input);
 	printf("Parse value: %d\n", parse); //DELETE
-	if(parse = 1)
-		AddNode(input, camaras);
+	return parse;
 }
 
-camara *AddNode(char *input, camara *camaras)
+int CountNodes(camara *pt)
 {
-	char c;
-	int i = 0;
-	camara *aux = NULL;
-	camara *new_node = NULL;
-
-	new_node = malloc(sizeof(camara);
-	if(new_node == NULL)
-		return -1; //error malloc
-	
-	//write camara name in new node
-	while(*input != '\0')
+	int count = 0;
+	if(pt != NULL)
 	{
-		new_node->name[i] = *input;
-		input++;
-		i++;
+		count = 1;
+		while(pt->next != NULL)
+		{
+			count++;
+			pt = pt->next;
+		}
 	}
+	return count;
+}
+
+camara *AddNode(char input[], camara *camaras)
+{
+	camara *new_node = NULL;
+	//camara *pt = camaras;
+	
+	new_node = malloc(sizeof(camara));
+	if(new_node == NULL)
+		return camaras; //error malloc
+	
+	input += 2; // skip "# " part
+	strcpy(new_node->name, input);
 	new_node->next = NULL;
 
 	if(camaras == NULL) //if it is the first node on list
@@ -57,10 +65,10 @@ camara *AddNode(char *input, camara *camaras)
 			camaras = camaras->next;
 		camaras->next = new_node;
 	}
-
+	return camaras;
 }
 
-int Parse(char *input)
+int Parse(char input[])
 {
 	//CHECK FOR CAMARA NAME STRUCTURE "# name-name"
 	if(*input == '#')
@@ -96,11 +104,23 @@ int Parse(char *input)
 
 int main()
 {
-	int aqualins = 0;
+	int parse = 0;
+	int n_aqualins = 0;
+	int n_camaras = 0;
+	char input[100];
 	camara *camaras = NULL;
 	//ask for input
-	Input(camaras);
-	//parse input
+
+	do
+	{
+		parse = Input(input);
+		if(parse == 1)
+			camaras = AddNode(input, camaras);
+	} while(parse != 0);
+	n_camaras = CountNodes(camaras);
+
+	printf("Aqualins: %d\n", n_aqualins);
+	printf("Camaras: %d\n", n_camaras);
 	//add to list OR
 	//do command OR
 	//end program
