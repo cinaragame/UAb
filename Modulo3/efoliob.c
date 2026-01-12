@@ -10,40 +10,45 @@ typedef struct camara
 
 enum
 {
-	INVALIDO,	//0
-	CAMARA,		//1
-	COMANDO		//2
+	INVALIDO,		//0
+	CAMARA,			//1
+	RELATORIO,		//2
+	IGNORE_COMMAND	//3
 };
 
 int Parse(char *input);
 
 int Input(char input[])
 {
-	int parse = 0; //check enumerate for return value
+	int parse = 0; 				//check enumerate for return value
 	
+	input[0] = '\0';			//reset input
 	scanf("%[^\n]%*c", input);	//pattern match all characters that are not new line
 	parse = Parse(input);
 	printf("Parse value: %d\n", parse); //DELETE
 	return parse;
 }
 
-int CountNodes(camara *pt)
+void RelatorioGlobal(camara *pt)
 {
-	int count = 0;
+	int n_aqualins = 0;
+	int n_camaras = 0;
 	if(pt != NULL)
 	{
-		count = 1;
+		n_camaras = 1;
 		while(pt->next != NULL)
 		{
-			count++;
+			n_camaras++;
 			pt = pt->next;
 		}
 	}
-	return count;
+	printf("Aqualins: %d\n", n_aqualins);
+	printf("Camaras: %d\n", n_camaras);
 }
 
 camara *AddNode(char input[], camara *camaras)
 {
+	camara *pt = NULL;
 	camara *new_node = NULL;
 	//camara *pt = camaras;
 	
@@ -61,17 +66,22 @@ camara *AddNode(char input[], camara *camaras)
 	}
 	else //add to the end of list
 	{
-		while(camaras->next != NULL)
-			camaras = camaras->next;
-		camaras->next = new_node;
+		pt = camaras;
+		while(pt->next != NULL)
+			pt = pt->next;
+		pt->next = new_node;
 	}
 	return camaras;
 }
 
 int Parse(char input[])
 {
-	//CHECK FOR CAMARA NAME STRUCTURE "# name-name"
-	if(*input == '#')
+
+	//CHECK FOR RELATORIO GLOBAL
+	if(strcmp(input, "# relatorio global") == 0)
+		return RELATORIO;
+	//CHECK FOR "# + 1 to 3 words" OR "# name-name"
+	else if(*input == '#')
 	{
 		input++;
 		if(*input == ' ')
@@ -82,8 +92,9 @@ int Parse(char input[])
 				while((*input >= 'A' && *input <= 'Z') ||
 					(*input >= 'a' && *input <= 'z'))
 					input++;
-
-				if(*input == '-')
+				if(*input == '\0') // checked "# command" format
+					return IGNORE_COMMAND;
+				else if(*input == '-') // keep checking for "# name-name" format
 				{
 					input++;
 					if((*input >= 'A' && *input <= 'Z') ||
@@ -96,10 +107,48 @@ int Parse(char input[])
 							return CAMARA;
 					}
 				}
+				else if(*input == ' ') // keep checking for "# command command" format
+				{
+					input++;
+					if((*input >= 'A' && *input <= 'Z') ||
+						(*input >= 'a' && *input <= 'z'))
+					{
+						while((*input >= 'A' && *input <= 'Z') ||
+							(*input >= 'a' && *input <= 'z'))
+							input++;
+						if(*input == '\0') // checked for "# command command"
+							return IGNORE_COMMAND;
+						else if(*input == ' ') //keep checking for "#command command command"
+						{
+							input++;
+							if((*input >= 'A' && *input <= 'Z') ||
+								(*input >= 'a' && *input <= 'z'))
+							{	
+								while((*input >= 'A' && *input <= 'Z') ||
+									(*input >= 'a' && *input <= 'z'))
+									input++;
+								if(*input == '\0') // checked for "# command command"
+									return IGNORE_COMMAND;
+							}
+						}
+					}	
+				}
 			}
 		}
 	}
 	return INVALIDO;
+}
+
+int CheckDouble(char input[], camara *camaras)
+{
+	input +=2;
+	while(camaras != NULL)
+	{
+		if(strcmp(camaras->name, input) == 0)
+			return 1;
+		camaras = camaras->next;
+	}
+	return 0;
 }
 
 int main()
@@ -109,20 +158,16 @@ int main()
 	int n_camaras = 0;
 	char input[100];
 	camara *camaras = NULL;
-	//ask for input
 
 	do
 	{
 		parse = Input(input);
 		if(parse == 1)
-			camaras = AddNode(input, camaras);
+		{
+			if(CheckDouble(input, camaras) == 0)
+				camaras = AddNode(input, camaras);
+		}
+		else if(parse == 2)
+			RelatorioGlobal(camaras);
 	} while(parse != 0);
-	n_camaras = CountNodes(camaras);
-
-	printf("Aqualins: %d\n", n_aqualins);
-	printf("Camaras: %d\n", n_camaras);
-	//add to list OR
-	//do command OR
-	//end program
-	//PART 1 AQUALINS AND CAMERAS COUNT
 }

@@ -1,0 +1,1 @@
+Os casos de teste visíveis 5 e 10 indicam que o programa não deve terminar caso sejam inseridos dados no formato "# palavra-palavra-palavra", pelo que acrescentou-se esta possibilidade no código (este tipo de comando não é aceite como input, entretanto não encerra o programa).
