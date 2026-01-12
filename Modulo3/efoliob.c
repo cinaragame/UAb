@@ -13,7 +13,8 @@ enum
 	INVALIDO,		//0
 	CAMARA,			//1
 	RELATORIO,		//2
-	IGNORE_COMMAND	//3
+	IGNORE_COMMAND,	//3
+	OUTRO			//4
 };
 
 int Parse(char *input);
@@ -74,14 +75,33 @@ camara *AddNode(char input[], camara *camaras)
 	return camaras;
 }
 
+int CheckInvalido(char input[])
+{
+	int letters = 0;
+
+	if(*input != '#')
+		return INVALIDO;
+	else
+	{
+		while(*input != '\0')
+		{
+			if((*input >= 'A' && *input <= 'Z')||(*input >= 'a' && *input <= 'z'))
+				return OUTRO;	// segue programa
+			input++;
+		}
+	}
+		return INVALIDO;	//encerrar programa
+}
+
 int Parse(char input[])
 {
-
+	if(CheckInvalido(input) == INVALIDO)
+		return INVALIDO;
 	//CHECK FOR RELATORIO GLOBAL
-	if(strcmp(input, "# relatorio global") == 0)
+	else if(strcmp(input, "# relatorio global") == 0)
 		return RELATORIO;
-	//CHECK FOR "# + 1 to 3 words" OR "# name-name"
-	else if(*input == '#')
+	//CHECK FOR CAMARA NAME STRUCTURE "# name-name"
+	if(*input == '#')
 	{
 		input++;
 		if(*input == ' ')
@@ -92,9 +112,7 @@ int Parse(char input[])
 				while((*input >= 'A' && *input <= 'Z') ||
 					(*input >= 'a' && *input <= 'z'))
 					input++;
-				if(*input == '\0') // checked "# command" format
-					return IGNORE_COMMAND;
-				else if(*input == '-') // keep checking for "# name-name" format
+				if(*input == '-')
 				{
 					input++;
 					if((*input >= 'A' && *input <= 'Z') ||
@@ -107,36 +125,10 @@ int Parse(char input[])
 							return CAMARA;
 					}
 				}
-				else if(*input == ' ') // keep checking for "# command command" format
-				{
-					input++;
-					if((*input >= 'A' && *input <= 'Z') ||
-						(*input >= 'a' && *input <= 'z'))
-					{
-						while((*input >= 'A' && *input <= 'Z') ||
-							(*input >= 'a' && *input <= 'z'))
-							input++;
-						if(*input == '\0') // checked for "# command command"
-							return IGNORE_COMMAND;
-						else if(*input == ' ') //keep checking for "#command command command"
-						{
-							input++;
-							if((*input >= 'A' && *input <= 'Z') ||
-								(*input >= 'a' && *input <= 'z'))
-							{	
-								while((*input >= 'A' && *input <= 'Z') ||
-									(*input >= 'a' && *input <= 'z'))
-									input++;
-								if(*input == '\0') // checked for "# command command"
-									return IGNORE_COMMAND;
-							}
-						}
-					}	
-				}
 			}
 		}
 	}
-	return INVALIDO;
+	return IGNORE_COMMAND;
 }
 
 int CheckDouble(char input[], camara *camaras)
@@ -162,12 +154,12 @@ int main()
 	do
 	{
 		parse = Input(input);
-		if(parse == 1)
+		if(parse == CAMARA)
 		{
 			if(CheckDouble(input, camaras) == 0)
 				camaras = AddNode(input, camaras);
 		}
-		else if(parse == 2)
+		else if(parse == RELATORIO)
 			RelatorioGlobal(camaras);
-	} while(parse != 0);
+	} while(parse != INVALIDO);
 }
