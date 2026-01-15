@@ -15,6 +15,7 @@ typedef struct aqualin
 	long saude;
 	long entry;
 	long vida;
+	long espera;
 	long alta;
 	struct aqualin *next;
 } aqualin;
@@ -29,9 +30,7 @@ enum
 	AQUALIN,		//5
 	TRATAMENTO,		//6
 	VIVO,			//7
-	MORTO,			//8		
-	TRANCADA,		//9
-	LIVRE			//10
+	MORTO			//8		
 };
 
 int Parse(char *input);
@@ -84,65 +83,170 @@ void FirstCamFree(camara *cam, aqualin *aqua)
 void AqualinInCamara(camara *cam, aqualin *aqua)
 {
 	long wait_time = 0;
-	long health_update; // for tracking health loss
+	long health_update = aqua->saude; // for tracking health loss
+	long i;
 	//CHECK AQUALIN HEALTH WHEN CAMERA IS FREE
 	if (cam->time_free > aqua->entry)
 	{
 		wait_time = cam->time_free - aqua->entry;
-		health_update = aqua->saude;
-		if(aqua->saude > 50)
-			health_update -= (wait_time/1000);
-		else if(aqua->saude > 20)
-			health_update -= (wait_time/100);
-		else if(aqua->saude > 10)
-			health_update -= (wait_time/10);
-		else
-			health_update -= wait_time;
+		for(i = 0; i < wait_time;)
+		{
+			if(health_update > 50)
+			{
+				health_update--;
+				i += 1000;
+			}
+			else if(health_update > 20)
+			{
+				health_update--;
+				i += 100;
+			}
+			else if(health_update > 10)
+			{
+				health_update--;
+				i += 10;
+			}
+			else
+			{
+				health_update--;
+				i++;
+			}
+		}
 	}
 	if(health_update <= 0)
 	{
 		aqua->vida = MORTO;
 		return;
 	}
-	else
-		aqua->saude = health_update;
+	//else
+	//	aqua->saude = health_update;
 	//TRATAMENTO
-	if(aqua->saude > 50)
-		aqua->alta = aqua->entry + wait_time + (100 - aqua->saude);
-	else if(aqua->saude > 20)
-		aqua->alta = aqua->entry + wait_time + ((100 - aqua->saude)*10);
-	else if(aqua->saude > 20)
-		aqua->alta = aqua->entry + wait_time + ((100 - aqua->saude)*100);
-	else
-		aqua->alta = aqua->entry + wait_time + ((100 - aqua->saude)*1000);
-	
+	aqua->alta = aqua->entry + wait_time;
+	while(health_update < 100)
+	{
+		if(health_update > 50)
+		{
+			health_update++;
+			aqua->alta += 1;
+		}
+		else if(aqua->saude > 20)
+		{
+			health_update++;
+			aqua->alta += 10;
+		}
+		else if(aqua->saude > 20)
+		{
+			health_update++;
+			aqua->alta += 100;
+		}
+		else
+		{
+			health_update++;
+			aqua->alta += 1000;
+		}
+	}
 	aqua->vida = VIVO;
+	aqua->espera = wait_time;
 	cam->time_free = aqua->alta;
+}
+
+void Mortes(aqualin *aqua)
+{
+	long n = 0;
+	long menor_saude;
+	long maior_saude;
+	aqualin *pt = aqua;
+
+	while(pt != NULL)
+	{
+		if(pt->vida == MORTO)
+		{
+			n++;
+			menor_saude = pt->saude;
+			maior_saude = pt->saude;
+			break;
+		}
+		pt = pt->next;
+	}
+	while(aqua != NULL)
+	{
+		if(aqua->vida == MORTO)
+		{
+			if(aqua->saude < menor_saude)
+				menor_saude = aqua->saude;
+			if(aqua->saude > maior_saude)
+				maior_saude = aqua->saude;
+		}
+		aqua = aqua->next;
+	}
+	if(n != 0)
+		printf("[Mortes: %ld %ld %ld]\n", n, menor_saude, maior_saude);
+}
+
+void Ultimo(aqualin *aqua)
+{
+	int aux;
+	aqualin *ultimo;
+
+	if(aqua != NULL)
+	{
+		aux = aqua->alta;
+		ultimo = aqua;
+		aqua = aqua->next;
+		while(aqua != NULL)
+		{
+			if(aqua->alta > aux)
+			{
+				aux = aqua->alta;
+				ultimo = aqua;
+			}
+			aqua = aqua->next;
+		}
+	}
+
+	printf("- ultima: %s %ld %ld %ld %ld\n", ultimo->name, ultimo->saude,
+		ultimo->entry, ultimo->espera, ultimo->alta);
+}
+
+void Primeiro(aqualin *aqua)
+{
+	int aux;
+	aqualin *primeiro;
+
+	if(aqua != NULL)
+	{
+		aux = aqua->alta;
+		primeiro = aqua;
+		aqua = aqua->next;
+		while(aqua != NULL)
+		{
+			if(aqua->alta < aux)
+			{
+				aux = aqua->alta;
+				primeiro = aqua;
+			}
+			aqua = aqua->next;
+		}
+	}
+
+	printf("- primeira: %s %ld %ld %ld %ld\n", primeiro->name, primeiro->saude,
+		primeiro->entry, primeiro->espera, primeiro->alta);
 }
 
 void Tratamentos(aqualin *aqua, camara *cam)
 {
-	aqualin *primeiro = NULL;
-	aqualin *ultimo = NULL;
-	aqualin *mortes = NULL;
+	aqualin *pt = aqua;
 
-	while(aqua != NULL)
+	while(pt != NULL)
 	{
-		FirstCamFree(cam, aqua);
-		aqua = aqua->next;
+		FirstCamFree(cam, pt);
+		pt = pt->next;
 	}
 
-	/*primeiro = Primeiro(aqua);
-	ultimo = Ultimo(aqua);
-	mortes = Mortes(aqua);
-
 	printf("Altas:\n");
-	printf("- primeira: %s %ld %ld %ld %ld\n",
-		aqualin, saude, instante, espera, instante-alta);
-	printf("- ultima: %s %ld %ld %ld %ld\n",
-		aqualin, saude, instante, espera, instante-alta);
-	printf("[Mortes: %ld %ld %ld]\n", número-mortes, menor-saude, maior-saude);
-	*/
+	Primeiro(aqua);
+	Ultimo(aqua);
+	Mortes(aqua);
 }
 
 void RelatorioGlobal(aqualin *aqua, camara *cam)
@@ -242,6 +346,7 @@ aqualin *AddAqualin(char input[], aqualin *aqualins)
 	new_node->entry = atol(input);
 	//DEFALUT THINGS
 	new_node->vida = VIVO;
+	new_node->espera = 0;
 	new_node->next = NULL;
 
 	//if it is the first node on list
