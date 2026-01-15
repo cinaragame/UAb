@@ -5,6 +5,7 @@
 typedef struct camara
 {
 	char name[100];
+	long time_free;
 	struct camara *next;
 } camara;
 
@@ -12,7 +13,9 @@ typedef struct aqualin
 {
 	char name[100];
 	long saude;
-	long instante;
+	long entry;
+	long vida;
+	long alta;
 	struct aqualin *next;
 } aqualin;
 
@@ -23,12 +26,18 @@ enum
 	RELATORIO,		//2
 	IGNORE_COMMAND,	//3
 	OUTRO,			//4
-	AQUALIN			//5
+	AQUALIN,		//5
+	TRATAMENTO,		//6
+	VIVO,			//7
+	MORTO,			//8		
+	TRANCADA,		//9
+	LIVRE			//10
 };
 
 int Parse(char *input);
 int CheckAqualin(char input[]);
 int CheckDoubleAqualin(char input[], aqualin *aqualins);
+void AqualinInCamara(camara *cam, aqualin *aqua);
 
 int Input(char input[])
 {
@@ -39,6 +48,101 @@ int Input(char input[])
 	parse = Parse(input);
 	printf("Parse value: %d\n", parse); //DELETE
 	return parse;
+}
+
+void FirstCamFree(camara *cam, aqualin *aqua)
+{
+	long n;
+	camara *first_free = NULL;
+	aqualin *pt = aqua;
+
+	//MARK ALL AQUALIN AS ALIVE
+	while(pt != NULL)
+	{
+		pt->vida = VIVO;
+		pt = pt->next;
+	}
+
+	if(cam != NULL) //assign first camara values
+	{
+		n = cam->time_free;
+		first_free = cam;
+		cam = cam->next;
+		while(cam != NULL) //replace values if other cam is free before
+		{
+			if(cam->time_free < n)
+			{
+				n = cam->time_free;
+				first_free = cam;
+			}
+			cam = cam->next;
+		}
+	}
+	AqualinInCamara(first_free, aqua);	
+}
+
+void AqualinInCamara(camara *cam, aqualin *aqua)
+{
+	long wait_time = 0;
+	long health_update; // for tracking health loss
+	//CHECK AQUALIN HEALTH WHEN CAMERA IS FREE
+	if (cam->time_free > aqua->entry)
+	{
+		wait_time = cam->time_free - aqua->entry;
+		health_update = aqua->saude;
+		if(aqua->saude > 50)
+			health_update -= (wait_time/1000);
+		else if(aqua->saude > 20)
+			health_update -= (wait_time/100);
+		else if(aqua->saude > 10)
+			health_update -= (wait_time/10);
+		else
+			health_update -= wait_time;
+	}
+	if(health_update <= 0)
+	{
+		aqua->vida = MORTO;
+		return;
+	}
+	else
+		aqua->saude = health_update;
+	//TRATAMENTO
+	if(aqua->saude > 50)
+		aqua->alta = aqua->entry + wait_time + (100 - aqua->saude);
+	else if(aqua->saude > 20)
+		aqua->alta = aqua->entry + wait_time + ((100 - aqua->saude)*10);
+	else if(aqua->saude > 20)
+		aqua->alta = aqua->entry + wait_time + ((100 - aqua->saude)*100);
+	else
+		aqua->alta = aqua->entry + wait_time + ((100 - aqua->saude)*1000);
+	
+	aqua->vida = VIVO;
+	cam->time_free = aqua->alta;
+}
+
+void Tratamentos(aqualin *aqua, camara *cam)
+{
+	aqualin *primeiro = NULL;
+	aqualin *ultimo = NULL;
+	aqualin *mortes = NULL;
+
+	while(aqua != NULL)
+	{
+		FirstCamFree(cam, aqua);
+		aqua = aqua->next;
+	}
+
+	/*primeiro = Primeiro(aqua);
+	ultimo = Ultimo(aqua);
+	mortes = Mortes(aqua);
+
+	printf("Altas:\n");
+	printf("- primeira: %s %ld %ld %ld %ld\n",
+		aqualin, saude, instante, espera, instante-alta);
+	printf("- ultima: %s %ld %ld %ld %ld\n",
+		aqualin, saude, instante, espera, instante-alta);
+	printf("[Mortes: %ld %ld %ld]\n", número-mortes, menor-saude, maior-saude);
+	*/
 }
 
 void RelatorioGlobal(aqualin *aqua, camara *cam)
@@ -135,8 +239,9 @@ aqualin *AddAqualin(char input[], aqualin *aqualins)
 		input++;
 	}
 	input++; //ir além do \0
-	new_node->instante = atol(input);
-	//NEXT ON LIST
+	new_node->entry = atol(input);
+	//DEFALUT THINGS
+	new_node->vida = VIVO;
 	new_node->next = NULL;
 
 	//if it is the first node on list
@@ -151,7 +256,7 @@ aqualin *AddAqualin(char input[], aqualin *aqualins)
 		pt = aqualins;
 		while(pt->next != NULL)
 			pt = pt->next;
-		if(pt->instante <= new_node->instante) // check for time of entry
+		if(pt->entry <= new_node->entry) // check for time of entry
 			pt->next = new_node;
 	}
 	return aqualins;
@@ -181,8 +286,11 @@ int Parse(char input[])
 	//CHECK FOR RELATORIO GLOBAL
 	else if(strcmp(input, "# relatorio global") == 0)
 		return RELATORIO;
+	//CHECK FOR TRATAMENTOS
+	else if(strcmp(input, "# tratamentos") == 0)
+		return TRATAMENTO;
 	//CHECK FOR CAMARA NAME STRUCTURE "# name-name"
-	if(*input == '#')
+	else if(*input == '#')
 	{
 		input++;
 		if(*input == ' ')
@@ -282,5 +390,7 @@ int main()
 		}
 		else if(parse == RELATORIO)
 			RelatorioGlobal(aqualins, camaras);
+		else if(parse == TRATAMENTO)
+			Tratamentos(aqualins, camaras);
 	} while(parse != INVALIDO);
 }
