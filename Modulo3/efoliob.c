@@ -186,51 +186,73 @@ void Mortes(aqualin *aqua)
 void Ultimo(aqualin *aqua)
 {
 	int aux;
+	int n;
 	aqualin *ultimo;
+	aqualin *pt = aqua;
 
-	if(aqua != NULL)
+	n = 0;
+	while(pt != NULL)
 	{
-		aux = aqua->alta;
-		ultimo = aqua;
-		aqua = aqua->next;
+		if(pt->vida == VIVO)
+		{
+			n++;
+			aux = pt->alta;
+			ultimo = pt;
+			break;
+		}
+		pt = pt->next;
+	}
+	
+	if(n != 0)
+	{
 		while(aqua != NULL)
 		{
-			if(aqua->alta > aux)
+			if(aqua->vida == VIVO && aqua->alta > aux)
 			{
 				aux = aqua->alta;
 				ultimo = aqua;
 			}
 			aqua = aqua->next;
 		}
+		printf("- ultima: %s %ld %ld %ld %ld\n", ultimo->name, ultimo->saude,
+			ultimo->entry, ultimo->espera, ultimo->alta);
 	}
-
-	printf("- ultima: %s %ld %ld %ld %ld\n", ultimo->name, ultimo->saude,
-		ultimo->entry, ultimo->espera, ultimo->alta);
 }
 
 void Primeiro(aqualin *aqua)
 {
 	int aux;
+	int n;
 	aqualin *primeiro;
+	aqualin *pt = aqua;
 
-	if(aqua != NULL)
+	n = 0;
+	while(pt != NULL)
 	{
-		aux = aqua->alta;
-		primeiro = aqua;
-		aqua = aqua->next;
+		if(pt->vida == VIVO)
+		{
+			n++;
+			aux = pt->alta;
+			primeiro = pt;
+			break;
+		}
+		pt = pt->next;
+	}
+	
+	if(n != 0)
+	{
 		while(aqua != NULL)
 		{
-			if(aqua->alta < aux)
+			if(aqua->vida == VIVO && aqua->alta < aux)
 			{
 				aux = aqua->alta;
 				primeiro = aqua;
 			}
 			aqua = aqua->next;
 		}
+		printf("- primeira: %s %ld %ld %ld %ld\n", primeiro->name, primeiro->saude,
+			primeiro->entry, primeiro->espera, primeiro->alta);
 	}
-
-	printf("- primeira: %s %ld %ld %ld %ld\n", primeiro->name, primeiro->saude,
-		primeiro->entry, primeiro->espera, primeiro->alta);
 }
 
 void Tratamentos(aqualin *aqua, camara *cam)
