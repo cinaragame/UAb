@@ -9,6 +9,7 @@ typedef struct aqualin
 	long entry;
 	long vida;
 	long espera;
+	long entrada_camara;
 	long alta;
 	struct aqualin *next;
 } aqualin;
@@ -43,7 +44,6 @@ enum
 	I_ESPERA,		//11
 	I_TRABALHO,		//12
 	I_SALVOS		//13
-
 };
 
 int Parse(char *input);
@@ -140,7 +140,11 @@ void AqualinInCamara(camara *cam, aqualin *aqua)
 		aqua->vida = MORTO;
 		aqua->espera = wait_time;
 		aqua->alta = (aqua->entry + wait_time);
-		return;
+		if(cam->time_free > aqua->entry)
+			aqua->entrada_camara = cam->time_free;
+		else
+			aqua->entrada_camara = aqua->entry;
+		//return;
 	}
 	//REGISTER AS PATIENT TREATED
 	new_node = malloc(sizeof(paciente));
@@ -160,6 +164,9 @@ void AqualinInCamara(camara *cam, aqualin *aqua)
 			pt->next = new_node;
 		}
 	}
+
+	if(health_update <= 0)
+		return;
 
 	aqua->alta = aqua->entry + wait_time;
 	while(health_update < 100)
@@ -187,6 +194,10 @@ void AqualinInCamara(camara *cam, aqualin *aqua)
 	}
 	aqua->vida = VIVO;
 	aqua->espera = wait_time;
+	if(cam->time_free > aqua->entry)
+		aqua->entrada_camara = cam->time_free;
+	else
+		aqua->entrada_camara = aqua->entry;
 	cam->time_free = aqua->alta;
 }
 
@@ -303,6 +314,7 @@ void Restart(aqualin *aqua, camara *cam)
 		aqua->vida = VIVO;
 		aqua->espera = 0;
 		aqua->alta = 0;
+		aqua->entrada_camara = 0;
 		aqua = aqua->next;
 	}
 	//MARK ALL CAMARAS AS FREE ON TIC = 0
@@ -437,6 +449,7 @@ aqualin *AddAqualin(char input[], aqualin *aqualins)
 	//DEFALUT THINGS
 	new_node->vida = VIVO;
 	new_node->espera = 0;
+	new_node->entrada_camara = 0;
 	new_node->next = NULL;
 
 	//if it is the first node on list
@@ -595,7 +608,7 @@ void RelatorioAqualins(aqualin *aqua, int tratamentos)
 	}
 }
 
-void RelatorioCamaras(camara *cam, int tratamentos)
+void RelatorioCamaras(camara *cam)
 {
 	while(cam != NULL)
 	{
@@ -604,12 +617,67 @@ void RelatorioCamaras(camara *cam, int tratamentos)
 		{
 			printf("- %s %ld %ld %ld\n", cam->pacientes->patient->name,
 				cam->pacientes->patient->saude,
-				cam->pacientes->patient->entry,
+				cam->pacientes->patient->entrada_camara,
 				cam->pacientes->patient->alta);
 			cam->pacientes = cam->pacientes->next;
 		}
 		cam = cam->next;
 	}
+}
+
+void IndicadorEspera(aqualin *aqua, int tratamentos)
+{
+	long n = 0;
+	long tempo_total = 0;
+
+	if(tratamentos == 0)
+	{
+		printf("0\n");
+		return;
+	}
+	while(aqua != NULL)
+	{
+		n++;
+		tempo_total += aqua->espera;
+		aqua = aqua->next;
+	}
+	if(n != 0)
+		printf("%ld\n", tempo_total/n);
+	else
+		printf("0\n");
+}
+
+void IndicadorTrabalho(aqualin *aqua, int tratamentos)
+{
+	long tempo_total = 0;
+	if(tratamentos == 0)
+	{
+		printf("0\n");
+		return;
+	}
+	while(aqua != NULL)
+	{
+		tempo_total += aqua->alta - aqua->entry;	
+		aqua = aqua->next;
+	}
+	printf("%ld\n", tempo_total);
+}
+
+void IndicadorSalvos(aqualin *aqua, int tratamentos)
+{
+	long n = 0;
+	if(tratamentos == 0)
+	{
+		printf("0\n");
+		return;
+	}
+	while(aqua != NULL)
+	{
+		if(aqua->vida == VIVO)
+			n++;
+		aqua = aqua->next;
+	}
+	printf("%ld\n", n);
 }
 
 int main()
@@ -643,6 +711,12 @@ int main()
 		else if(parse == R_AQUALINS)
 			RelatorioAqualins(aqualins, n_tratamentos);
 		else if(parse == R_CAMARAS)
-			RelatorioCamaras(camaras, n_tratamentos);
+			RelatorioCamaras(camaras);
+		else if(parse == I_ESPERA)
+			IndicadorEspera(aqualins, n_tratamentos);
+		else if(parse == I_TRABALHO)
+			IndicadorTrabalho(aqualins, n_tratamentos);
+		else if(parse == I_SALVOS)
+			IndicadorSalvos(aqualins, n_tratamentos);
 	} while(parse != INVALIDO);
 }
