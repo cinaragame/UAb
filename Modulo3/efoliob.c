@@ -610,16 +610,18 @@ void RelatorioAqualins(aqualin *aqua, int tratamentos)
 
 void RelatorioCamaras(camara *cam)
 {
+	paciente *aux;
 	while(cam != NULL)
 	{
 		printf("%s:\n", cam->name);
-		while(cam->pacientes != NULL)
+		aux = cam->pacientes;
+		while(aux != NULL)
 		{
-			printf("- %s %ld %ld %ld\n", cam->pacientes->patient->name,
-				cam->pacientes->patient->saude,
-				cam->pacientes->patient->entrada_camara,
-				cam->pacientes->patient->alta);
-			cam->pacientes = cam->pacientes->next;
+			printf("- %s %ld %ld %ld\n", aux->patient->name,
+				aux->patient->saude,
+				aux->patient->entrada_camara,
+				aux->patient->alta);
+			aux = aux->next;
 		}
 		cam = cam->next;
 	}
@@ -680,6 +682,32 @@ void IndicadorSalvos(aqualin *aqua, int tratamentos)
 	printf("%ld\n", n);
 }
 
+void FreeAll(aqualin *aqua, camara *cam)
+{
+	aqualin *aux_aqua;
+	camara *aux_cam;
+	paciente *aux_pac;
+
+	while(aqua != NULL)
+	{
+		aux_aqua = aqua;
+		aqua = aqua->next;
+		free(aux_aqua);
+	}
+	while(cam != NULL)
+	{
+		while(cam->pacientes != NULL)
+		{
+			aux_pac = cam->pacientes;
+			cam->pacientes = cam->pacientes->next;
+			free(aux_pac);
+		}
+		aux_cam = cam;
+		cam = cam->next;
+		free(aux_cam);
+	}
+}
+
 int main()
 {
 	int parse = 0;
@@ -719,4 +747,5 @@ int main()
 		else if(parse == I_SALVOS)
 			IndicadorSalvos(aqualins, n_tratamentos);
 	} while(parse != INVALIDO);
+	FreeAll(aqualins, camaras);
 }
