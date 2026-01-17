@@ -129,12 +129,12 @@ void AqualinInCamara(camara *cam, aqualin *aqua)
 			health_update++;
 			aqua->alta += 1;
 		}
-		else if(aqua->saude > 20)
+		else if(health_update > 20)
 		{
 			health_update++;
 			aqua->alta += 10;
 		}
-		else if(aqua->saude > 20)
+		else if(health_update > 10)
 		{
 			health_update++;
 			aqua->alta += 100;
