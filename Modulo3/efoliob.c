@@ -55,13 +55,6 @@ void FirstCamFree(camara *cam, aqualin *aqua)
 	camara *first_free = NULL;
 	aqualin *pt = aqua;
 
-	//MARK ALL AQUALIN AS ALIVE
-	while(pt != NULL)
-	{
-		pt->vida = VIVO;
-		pt = pt->next;
-	}
-
 	if(cam != NULL) //assign first camara values
 	{
 		n = cam->time_free;
@@ -83,33 +76,47 @@ void FirstCamFree(camara *cam, aqualin *aqua)
 void AqualinInCamara(camara *cam, aqualin *aqua)
 {
 	long wait_time = 0;
+	long wait_time_update = 0;
 	long health_update = aqua->saude; // for tracking health loss
 	long i;
 	//CHECK AQUALIN HEALTH WHEN CAMERA IS FREE
 	if (cam->time_free > aqua->entry)
 	{
 		wait_time = cam->time_free - aqua->entry;
-		for(i = 0; i < wait_time;)
+		wait_time_update = wait_time;
+		while(wait_time_update != 0)
 		{
 			if(health_update > 50)
 			{
-				health_update--;
-				i += 1000;
+				if(wait_time_update > 1000)
+				{
+					health_update--;
+					wait_time_update -= 1000;
+				}
+				else break;
 			}
 			else if(health_update > 20)
 			{
-				health_update--;
-				i += 100;
+				if(wait_time_update > 100)
+				{
+					health_update--;
+					wait_time_update -= 100;
+				}
+				else break;
 			}
 			else if(health_update > 10)
 			{
-				health_update--;
-				i += 10;
+				if(wait_time_update > 10)
+				{
+					health_update--;
+					wait_time_update -= 10;
+				}
+				else break;
 			}
-			else
+			else// WAIT TIME UPDATE > 1 ??????????????????????????
 			{
 				health_update--;
-				i++;
+				wait_time_update--;
 			}
 		}
 	}
@@ -164,7 +171,6 @@ void Mortes(aqualin *aqua)
 			n++;
 			menor_saude = pt->saude;
 			maior_saude = pt->saude;
-			break;
 		}
 		pt = pt->next;
 	}
@@ -255,10 +261,27 @@ void Primeiro(aqualin *aqua)
 	}
 }
 
+void Restart(aqualin *aqua, camara *cam)
+{
+	//MARK ALL AQUALIN AS ALIVE
+	while(aqua != NULL)
+	{
+		aqua->vida = VIVO;
+		aqua = aqua->next;
+	}
+	//MARK ALL CAMARAS AS FREE ON TIC = 0
+	while(cam != NULL)
+	{
+		cam->time_free = 0;
+		cam = cam->next;
+	}
+}
+
 void Tratamentos(aqualin *aqua, camara *cam)
 {
 	aqualin *pt = aqua;
 
+	Restart(aqua, cam);
 	while(pt != NULL)
 	{
 		FirstCamFree(cam, pt);

@@ -1,0 +1,13 @@
+# t-s
+# b-o
+# v-m 30 0
+# k-s 22 50
+# r-n 48 100
+# t-o 15 150
+# tratamentos
+# s-t
+# m-v 8 200
+# p-r 60 250
+# tratamentos
+
+
