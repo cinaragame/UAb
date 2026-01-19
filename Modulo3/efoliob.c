@@ -58,7 +58,6 @@ int Input(char input[])
 	input[0] = '\0';			//reset input
 	scanf("%[^\n]%*c", input);	//pattern match all characters that are not new line
 	parse = Parse(input);
-	//printf("Parse value: %d\n", parse); //DELETE
 	return parse;
 }
 
@@ -128,7 +127,7 @@ void AqualinInCamara(camara *cam, aqualin *aqua)
 				}
 				else break;
 			}
-			else// WAIT TIME UPDATE > 1 ??????????????????????????
+			else
 			{
 				health_update--;
 				wait_time_update--;
@@ -144,7 +143,6 @@ void AqualinInCamara(camara *cam, aqualin *aqua)
 			aqua->entrada_camara = cam->time_free;
 		else
 			aqua->entrada_camara = aqua->entry;
-		//return;
 	}
 	//REGISTER AS PATIENT TREATED
 	new_node = malloc(sizeof(paciente));
@@ -380,7 +378,6 @@ camara *AddCamara(char input[], camara *camaras)
 {
 	camara *pt = NULL;
 	camara *new_node = NULL;
-	//camara *pt = camaras;
 	
 	new_node = malloc(sizeof(camara));
 	if(new_node == NULL)
@@ -456,6 +453,7 @@ aqualin *AddAqualin(char input[], aqualin *aqualins)
 	if(aqualins == NULL && new_node->saude > 0 && new_node->saude < 100)
 	{
 		aqualins = new_node;		
+		return aqualins;
 	}
 	//check for double entry, health, instante and add to the end of list
 	else if(CheckDoubleAqualin(new_node->name, aqualins) == 0 &&
@@ -466,7 +464,10 @@ aqualin *AddAqualin(char input[], aqualin *aqualins)
 			pt = pt->next;
 		if(pt->entry <= new_node->entry) // check for time of entry
 			pt->next = new_node;
+		return aqualins;
 	}
+	//free if not added
+	free(new_node);
 	return aqualins;
 }
 int CheckInvalido(char input[])
@@ -577,7 +578,6 @@ int CheckDoubleCamara(char input[], camara *camaras)
 
 int CheckDoubleAqualin(char input[], aqualin *aqualins)
 {
-	//input +=2;
 	while(aqualins != NULL)
 	{
 		if(strcmp(aqualins->name, input) == 0)
