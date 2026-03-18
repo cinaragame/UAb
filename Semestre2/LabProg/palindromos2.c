@@ -92,6 +92,11 @@ int LastWordSize(char *input, int last_char)
 
 void PrintResult(char *input, int first_half, int second_half)
 {
+	if(second_half - first_half == 0)
+	{
+		printf("There's no palindrome in the text.\n");
+		return;
+	}
 	printf("\"");
 	while(first_half <= second_half)
 	{
@@ -105,6 +110,55 @@ void PrintResult(char *input, int first_half, int second_half)
 	printf("\"\n");
 }
 
+void CheckIfPalindromo(char *input, int input_end)
+{
+	int iteration_start = 0;
+	int iteration_end = input_end;
+	int i, j;
+	int palindrome_start = 0;
+	int palindrome_end = 0;
+
+	//iterates word for word in user input up until the middle
+	for(iteration_start = 0; iteration_start < input_end; iteration_start += strlen(&input[iteration_start]) + 1)
+	{
+		//iterates word for word backwards, while number is bigger than the start of the analysis (iteration_start)
+		for(iteration_end = input_end; iteration_end > iteration_start; iteration_end += -LastWordSize(input, iteration_end) - 1)
+		{
+			i = iteration_start;
+			j = iteration_end;
+			//iterate while letters match
+			while(toupper(input[i]) == toupper(input[j]) && i < j)
+			{
+				i++;
+				j--;
+				//Check for space
+				while(input[i] == ' ' || input [i] == '\0')
+					i++;
+				while(input[j] == ' ' || input [j] == '\0')
+					j--;
+			}
+			//if i and j have crossed paths, means it's a palindrome
+			if(i >= j)
+			{
+				printf("Palindrome\n");
+				//Store the bigger palindrome start and finish
+				if(palindrome_end - palindrome_start < iteration_end - iteration_start)
+				{
+					palindrome_start = iteration_start;
+					palindrome_end = iteration_end;
+				}
+			}
+		}
+	}
+	PrintResult(input, palindrome_start, palindrome_end);
+}
+
+int CheckMatchingLetters(char* input, int first_letter, int second_letter)
+{
+	
+}
+
+/*
 void CheckIfPalindromo(char *input, int first_half, int second_half)
 {
 	int temp_a = 0;
@@ -115,7 +169,7 @@ void CheckIfPalindromo(char *input, int first_half, int second_half)
 	int j = second_half;
 	int size = second_half - first_half;
 	
-	for(i = 0; i < j; i += strlen(&input[c_start]))
+	for(i = 0; i < size/2; i += strlen(&input[c_start]))
 	{
 		c_start = i;
 		first_half = i;
@@ -157,7 +211,7 @@ void CheckIfPalindromo(char *input, int first_half, int second_half)
 		PrintResult(input, temp_a, temp_b);
 	else printf("There's no palindrome.\n");
 }
-
+*/
 int CheckForWord(int length, char* input)
 
 {
@@ -186,5 +240,5 @@ int main (int argc, char* argv[])
 	first_half = 0;
 	second_half = length -1;
 
-	CheckIfPalindromo(argv[1], first_half, second_half);
+	CheckIfPalindromo(argv[1], second_half);
 }
