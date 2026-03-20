@@ -119,6 +119,16 @@ void PrintResult(char *input, int first_half, int second_half)
 	printf("\"\n");
 }
 
+int WordLength(char *word)
+{
+	int size = 0;
+	
+	while(word[size] != ' ' && word[size] != '\0' && word[size] != EOF)
+		size++;
+
+	return size;
+}
+
 void CheckIfPalindromo(char *input, int input_end)
 {
 	int iteration_start = 0;
@@ -128,13 +138,20 @@ void CheckIfPalindromo(char *input, int input_end)
 	int palindrome_end = 0;
 
 	//iterates word for word in user input up until the middle
-	for(iteration_start = 0; iteration_start < input_end; iteration_start += strlen(&input[iteration_start]) + 1)
+	for(iteration_start = 0; iteration_start < input_end; iteration_start += WordLength(&input[iteration_start]) + 1)
 	{
 		//iterates word for word backwards, while number is bigger than the start of the analysis (iteration_start)
 		for(iteration_end = input_end; iteration_end > iteration_start; iteration_end += -LastWordSize(input, iteration_end) - 1)
 		{
 			i = iteration_start;
 			j = iteration_end;
+			// **************** Repreated from below
+			//Check anything that is not an ASCII letter, and skip it
+			while(!IfLetter(input[i]) || input [i] == '\0')
+				i++;
+			while(!IfLetter(input[j]) || input [j] == '\0')
+				j--;
+			// **************** Repreated from below
 			//iterate while letters match
 			while(toupper(ReturnSimpleChar(&input[i])) == toupper(ReturnSimpleChar(&input[j])) && i < j)
 			{
