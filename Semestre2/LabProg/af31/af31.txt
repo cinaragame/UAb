@@ -1,0 +1,13 @@
+Relatório da AF 3.1
+
+Problemas de legibilidade do código:
+1) Nomes crípticos de funções e variáveis, como: p, a, n, s, lim
+2) Código monolítico: código escrito sem recurso à modulos (implementação e interface)
+3) Comentários pouco descritivos das funções, sem menção à parâmetros ou retornos
+4) Aninhamento excessivo, quando se poderia utilizar guard clauses (retorno antecipado)5) Não fica claro qual resultado ou contagem estão a ser escritos na tela, podendo este código ser implementado em módulos próprios, ao invés da main.c
+
+Questão de reflexão: Justifica uma função de uma linha existir como função separada quando a mesma cumpre um propósito específico, que pode ser separado do resto do código, e quando é utilizada de forma repetida por várias funções do programa. Este é o caso da função de validação da array "valores" nesta atividade formativa.
+
+A partir dos problemas identificados e da questão de reflexão, o código proposto foi refatorado, recorrendo à metodologia de módulos. Assim, foram criados três ficheiros: main.c, af31.c (implementação) e af31.h (interface). Cada uma das funções principais foi separada em uma função static no ficheiro de implementação, responsável pelos cálculos, e uma função de interface responsável pela impressão dos resultados. Além disso, a função de validação das arrays recebidas foi também separada numa função static própria no ficheiro de implementação.
+
+Segue o código proposto:
