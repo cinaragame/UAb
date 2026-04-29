@@ -14,7 +14,7 @@
 
 #include <stdio.h>
 
-extern void generator_reset_program();
+extern void generator_set_program_to_state_zero();
 extern void generator_set_new_random_number();
 extern void generator_print_seed();
 extern void generator_print_random_number();

@@ -19,7 +19,7 @@ static void stt_reset_random_number()
 	random_number = 0;
 }
 
-void generator_reset_program
+void generator_set_program_to_state_zero()
 {
 	stt_reset_seed();
 	stt_reset_generator_counter();
