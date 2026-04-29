@@ -1,7 +1,8 @@
 #include "input.h"
+#include "generator.h"
 
-#define SEED_USER_INPUT_LENGTH 10
-#define MENU_USER_INPUT_LENGTH 2
+#define SEED_USER_INPUT_LENGTH 11	// 9 digits +\n + \0
+#define MENU_USER_INPUT_LENGTH 3	// number + \n + \0
 
 /*
 * Function validates if user input respected maximum input size
@@ -17,7 +18,7 @@
 static int stt_validate_input_length(char *user_input, int input_max_size)
 {
 	for(int i = 0; i < input_max_size; i++)
-		if(*(user_input + i) == '\n')
+		if(*(user_input + i) == '\n') //MUDEI DE \N PARA \0, CONFIRMAR SE FAZ SENTIDO
 			return 1;
 	return 0;
 }
@@ -37,7 +38,7 @@ static void stt_clean_stdin_buffer()
 			break;
 		if(c == '\0')
 			break;
-		if(c == 'EOF')
+		if(c == EOF)
 			break;
 	}
 }
@@ -59,7 +60,7 @@ static int stt_is_number(char *user_input, int input_max_size)
 	for(i = 0; i < input_max_size; i++)
 	{
 		digit = *(user_input + i);
-		if(digit == '\n' || digit == '\0' || digit == 'EOF')
+		if(digit == '\n' || digit == '\0' || digit == EOF)
 			break;
 		if(digit < '0' || digit > '9')
 			return 0;
@@ -75,10 +76,10 @@ static int stt_parse_user_input(char *user_input, int input_max_size)
 	if(!stt_validate_input_length(user_input, input_max_size))
 	{
 		stt_clean_stdin_buffer();
-		printf("Invalid input, maximum of %d digits\n", SEED_USER_INPUT_LENGTH - 1);
+		printf("Invalid input, maximum of %d digit(s)\n", input_max_size - 2);
 		return 0;
 	}
-	if(!is_number(user_input, input_max_size))
+	if(!stt_is_number(user_input, input_max_size))
 	{
 		printf("Invalid input, insert only numbers\n");
 		return 0;
@@ -89,10 +90,10 @@ static int stt_parse_user_input(char *user_input, int input_max_size)
 int get_generator_user_input()
 {
 	char user_input[SEED_USER_INPUT_LENGTH];
-	printf("Insert seed with maximum %d digits: ", SEED_USER_INPUT_LENGTH - 1);
+	printf("Insert seed with maximum %d digits: ", SEED_USER_INPUT_LENGTH - 2);
 	fgets(user_input, sizeof(char) * SEED_USER_INPUT_LENGTH, stdin);
 	if(!stt_parse_user_input(user_input, SEED_USER_INPUT_LENGTH))
-		return seed;
+		return generator_get_seed();
 	return atoi(user_input);
 }
 

@@ -18,6 +18,7 @@ extern void generator_set_program_to_state_zero();
 extern void generator_set_new_random_number();
 extern void generator_print_seed();
 extern void generator_print_random_number();
-extern void generator_print_counter();
+extern void generator_print_generator_counter();
+extern int generator_get_seed();
 
 #endif //GERADOR_H

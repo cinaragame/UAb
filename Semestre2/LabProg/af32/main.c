@@ -1,4 +1,4 @@
-#include "gerador.h"
+#include "generator.h"
 #include "menu.h"
 
 int main(void)

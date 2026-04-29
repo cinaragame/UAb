@@ -1,9 +1,14 @@
-#include "gerador.h"
+#include "generator.h"
+#include "input.h"
 
 static int seed;
 static unsigned int generator_counter;
 static int random_number;
 
+int generator_get_seed()
+{
+	return seed;
+}
 static void stt_reset_seed()
 {
 	seed = 0;
@@ -33,14 +38,15 @@ static void stt_set_seed(int user_seed)
 
 static void stt_set_random_number()
 {
-	random_number = (((seed = seed * 214013L + 2531011L) >> 16) & 0x7fff);
+	int internal_seed = seed; //HERE LIES THE PROBLEM WITH GLOBAL VARIABLES
+	random_number = (((internal_seed = internal_seed * 214013L + 2531011L) >> 16) & 0x7fff);
 	generator_counter++;
 }
 
 void generator_set_new_random_number()
 {
 	int new_seed;
-	new_seed = stt_get_user_input();
+	new_seed = get_generator_user_input();
 	stt_set_seed(new_seed);
 	stt_set_random_number();
 }
