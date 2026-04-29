@@ -3,6 +3,6 @@
 
 int main(void)
 {
-	srandom(2);
+	srandom(100);
 	printf("%lu\n", random());
 }
