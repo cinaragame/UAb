@@ -2,19 +2,25 @@
 #include "input.h"
 #include "generator.h"
 
+void stt_written_options()
+{
+	printf("\n----MENU----\n"
+		"1 - Generate new random number\n"
+		"2 - Print current seed\n"
+		"3 - Print current random number\n"
+		"4 - Print quantity of random numbers generated in this session\n"
+		"5 - Reset program\n"
+		"6 - End program\n"
+		"7 - Help\n"
+			"------------\n\n");
+}
+
 void menu()
 {
 	static int selected_menu_option = 0;
+	stt_written_options();
 	while(selected_menu_option != 6)
 	{
-		printf("\n----MENU----\n"
-			"1 - Generate new random number\n"
-			"2 - Print current seed\n"
-			"3 - Print current random number\n"
-			"4 - Print quantity of random numbers generated in this session\n"
-			"5 - Reset program\n"
-			"6 - End program\n"
-			"------------\n\n");
 		selected_menu_option = get_menu_user_input();
 		switch(selected_menu_option)
 		{
@@ -36,6 +42,9 @@ void menu()
 				break;
 			case 6:
 				printf("Closing program\n");
+				break;
+			case 7:
+				stt_written_options();
 				break;
 			default:
 		}

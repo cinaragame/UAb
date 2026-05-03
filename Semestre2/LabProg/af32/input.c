@@ -18,7 +18,7 @@
 static int stt_validate_input_length(char *user_input, int input_max_size)
 {
 	for(int i = 0; i < input_max_size; i++)
-		if(*(user_input + i) == '\n') //MUDEI DE \N PARA \0, CONFIRMAR SE FAZ SENTIDO
+		if(*(user_input + i) == '\n' ) //MUDEI DE \N PARA \0, CONFIRMAR SE FAZ SENTIDO
 			return 1;
 	return 0;
 }
@@ -73,6 +73,8 @@ static int stt_is_number(char *user_input, int input_max_size)
 
 static int stt_parse_user_input(char *user_input, int input_max_size)
 {
+//	if(*user_input == EOF)
+//		return 0;
 	if(!stt_validate_input_length(user_input, input_max_size))
 	{
 		stt_clean_stdin_buffer();
@@ -101,7 +103,11 @@ int get_menu_user_input()
 {
 	char user_input[MENU_USER_INPUT_LENGTH];
 	printf("Insert menu option: ");
-	fgets(user_input, sizeof(char) * MENU_USER_INPUT_LENGTH, stdin);
+	if(fgets(user_input, sizeof(char) * MENU_USER_INPUT_LENGTH, stdin) == NULL)
+	{
+		clearerr(stdin);
+		stt_clean_stdin_buffer;
+	}
 	if(!stt_parse_user_input(user_input, MENU_USER_INPUT_LENGTH))
 		return 0;
 	return atoi(user_input);
