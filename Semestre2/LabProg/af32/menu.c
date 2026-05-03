@@ -2,7 +2,7 @@
 #include "input.h"
 #include "generator.h"
 
-void stt_written_options()
+static void stt_written_options()
 {
 	printf("\n----MENU----\n"
 		"1 - Generate new random number\n"
