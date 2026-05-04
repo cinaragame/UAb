@@ -1,25 +1,48 @@
 #include <stdio.h>
-#include "validate.h"
+#include "contacto.h"
+#include "lista.h"
+#include "io.h"
+
+#define FICHEIRO "contactos.txt"
 
 int main(void)
 {
-	char phone[20];
-	char email[30];
+	Contacto c;				// contacto temporario para criacao e validacao
+	Contacto buffer[100];	// array auxiliar para operações de ficheiro
+	int total, encontrados;
 
-	while(1)
+	// Criação e adição de contactos válido
+	if(contacto_criar(&c, "Ana Silva", "ana@email.com", "912345678"))
+		lista_adicionar(&c);
+	
+	if(contacto_criar(&c, "Bruno Costa", "bruno@exemplo.pt", "+351961234567"))
+		lista_adicionar(&c);
+
+	// Email inválido - deve ser rejeitado por contacto_criar
+	if(!contacto_criar(&c, "Carlos", "email-invalido", "910000000"))
+		printf("Contacto rejeitado: email invalido\n");
+
+	printf("\n=== Todos os contactos ===\n");
+	lista_mostrarTodos();
+
+	printf("\n=== Pesquisa por 'Silva' ===\n");
+	encontrados = lista_procurarPorNome("Silva");
+	printf("Encontrados: %d\n", encontrados);
+
+	//Guardar lista em ficheiro usando lista_obterTodos
+	total = lista_obterTodos(buffer, 100);
+	if(io_guardar(FICHEIRO, buffer, total))
+		printf("\nGuardados %d contactos em %s\n", total, FICHEIRO);
+
+	// Recarregar do ficheiro e mostrar
+	total = io_carregar(FICHEIRO, buffer, 100);
+	if(total >= 0)
 	{
-	printf("Insert phone number: ");
-	fgets(phone, 20, stdin);
-	if(!VALIDATE_phone(phone, 20))
-		printf("Invalid number\n");
-	else
-		printf("Valid number\n");
-
-	printf("Insert email: ");
-	fgets(email, 30, stdin);
-	if(!VALIDATE_email(email, 30))
-		printf("Invalid email\n");
-	else
-		printf("Valid email\n");
+		int i;
+		printf("\n=== Recarregados do ficheiro (%d) ===\n", total);
+		for(i = 0; i < total; i++)
+			contacto_mostrar(&buffer[i]);
 	}
+
+	return 0;
 }
