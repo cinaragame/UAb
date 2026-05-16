@@ -1,0 +1,53 @@
+AF 1.1 | Semana 2 -  Enquadramento e Desenvolvimento Software
+
+1) Após ler o Capítulo 1, Enquadramento, do livro adotado, responda às seguintes questões: 
+
+1.1) Explique, com base na definição de Anthony, a diferença entre um sistema de informação operacional, táctico e estratégico. Dê exemplos para clarificar a sua justificação.
+
+Esta definição de Anthony é dada em função do nível das atividades de gestão (dentro da organização) no qual o software tem impacto, sendo operacional relacionado ao dia-a-dia de operações de alteração na informação principalmente (como faturação, controle de estoque e encomendas, contabilidade geral e salários),  tático relacionado a análise de informação para decisões de curto prazo (como análise de qualidade e vendas, controlo orçamental, contabilidade analítica e gestão do inventário) e estratégico relacionado a questões de planeamento de médio e longo prazo (como previsão de vendas, receitas e custos, planeamento de alocação de produção e recursos humanos, e modelação financeira). 
+
+1.2) Enumere os três principais problemas relacionados com o desenvolvimento de sistemas de informação. Enumere três das causas conhecidas.
+
+Os trẽs principais problemas são: falta de qualidade, desvios dos prazos de desenvolvimento e custos utrapassados. Três causas conhecidas são: falhas na coordenação de projeto (definição de objetivos, prioridades e estimativas), mudanças frequentes dos requisitos do negócio (e incapacidade de lidar com isso) e incompreensão do valor dos sistemas de informação numa organização.
+
+2) Após ler o Capítulo 2, Desenvolvimento de Software, do livro adotado, responda às seguintes questões. 
+
+2.1) Quais as fases e respetivas tarefas no processo de desenvolvimento de software? Explique cada tarefa.
+
+Tradicionalmente são três as fases do processo de desenvolvimento de software:
+a) Fase de Concepção, com as tarefas de Planeamento (identificação das necessidades, alternativas e definição de plano de trabalho), Análise (levantamento de requisitos e especificação do sistema).
+b) Fase de Implementação com tarefas de Desenho (definição da arquitetura global da solução), Desenvolvimento (programação dos componentes do sistema), Testes/Integração (verificação com o objetivo de obter aceitação do utilizador), Instalação (disponibilização do sistema para utilizadores).
+c) Fase de Manutenção com tarefas de Operação e Manutenção (alterações posteriores à entrada em funcionamento do produto).
+
+f
+2.2) Na sequência das críticas apontadas ao ciclo de vida em cascata, foi sugerida a aplicação de técnicas de prototipagem como forma de ultrapassar esses problemas, o que resultou num novo ciclo de desenvolvimento. Concorda que, apenas por este facto, se possa considerar um novo ciclo? Justifique.
+
+Concordo. Este novo ciclo deve ser mais rápido e superficial do que o do desenvolvimento do produto em si (a tarefa de desenvolvimento do protótipo por exemplo, deve ser muito menos complexa, não sendo necessária a entrega de um produto funcional, apenas de uma demonstração visual do pretendido), entretanto, para o desenvolvimento do protótipo, deve-se cumprir todas as fases do processo, uma vez que este é uma espécie de "promessa" que se faz ao cliente do que será o produto final, sendo assim importante garantir que este produto final é viável e alcançável avaliando todas as fases que o produto real deverá enfrentar no seu desenvolvimento.
+
+**chatgpt**
+A resposta mais aceite em Engenharia de Software é não necessariamente.
+
+Porque:
+
+Prototipagem é uma técnica, não obrigatoriamente um modelo de ciclo de vida.
+
+Pode ser usada dentro de um ciclo já existente (por exemplo, durante análise ou design).
+
+Só se pode falar de novo ciclo de desenvolvimento se a estrutura do processo mudar (por exemplo, passar a ser iterativo, evolutivo, etc.).
+
+Além disso, um ponto importante:
+um protótipo nem sempre passa por todas as fases completas do ciclo (análise, design detalhado, testes formais, etc.). Muitas vezes é feito rapidamente apenas para explorar requisitos ou interface.
+
+Resposta para exame:
+Não necessariamente. A introdução de técnicas de prototipagem não implica obrigatoriamente a existência de um novo ciclo de desenvolvimento. A prototipagem é uma técnica que pode ser utilizada dentro de um modelo já existente, como o modelo em cascata, com o objetivo de clarificar requisitos e obter feedback dos utilizadores antes da implementação final. Só se pode considerar um novo ciclo de desenvolvimento quando há uma alteração na estrutura do processo, como a introdução de iterações ou novas fases no modelo.
+**chatgpt**
+
+3) Após estudar o PPT Requisitos.
+
+3.1) Exemplifique requisitos funcionais e não funcionais.
+
+Requisitos do sistema é o conjunto de objetivos gerais, é "o que" o sistema deve fazer. Os requisitos funcionais são a determinação de como o sistema deve reagir (ou como não deve reagir) a determinadas entradas, como por exemplo: permitir a inclusão, alteração e remoção de informação (nomes, datas, etc), fornecer telas apropriadas para leitura de documentos e identificação de cada pedido com um identificador único. Os requisitos não funcionais estão ligados por exemplo a fatores organizacionais (políticas internas da organização, como o formato de entrega dos produtos), externos (como interoperabilidade com outros sistemas, questões legais - como não divulgação de dados pessoais), de produto (relativo ao seu comportamento, como desempenho, confiabilidade ou portabilidade), de ambiente (local de funcionamento), de usuários (quantos e quais serão os tipos de usuários), de documentação (online, em papel, etc), de fluxo de dados, de segurança e de recursos (quanto espaço físico será ocupado pelo sistema).
+
+3.2) Quais as formas mais usuais de levantamentos dos requisitos?
+
+As formas mais usuais são entrevista (poucas pessoas), questionário (muitas pessoas), observação direta e sessões de brainstorming.

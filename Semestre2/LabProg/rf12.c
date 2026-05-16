@@ -10,8 +10,8 @@ typedef struct {
 } Estudante;
 
 // Variáveis globais
-Estudante* estudantes;
-int numEstudantes;
+Estudante* estudantes; // AMBITO - passar por ref nas funções
+int numEstudantes;	   // AMBITO - passar por ref nas funções
 
 // Protótipos das funções
 void adicionarEstudante(char* nome, float nota);
@@ -24,7 +24,7 @@ int main(void) {
     int opcao; // nao inicializa opcao, é problema?
     char nome[50];
     float nota;
-    setlocale(LC_ALL, "PT"); // Não inclui bbt locale.h
+    setlocale(LC_ALL, "PT"); // SINTAXE - Não inclui bbt locale.h
     numEstudantes = 0;
     estudantes = (Estudante*)malloc(10 * sizeof(Estudante)); //Não verifica alocação de memoria
     
@@ -42,7 +42,7 @@ int main(void) {
                 printf("Nome: ");
                 scanf("%s", nome);
                 printf("Nota: ");
-                scanf("%f", &nota); // falta virgula
+                scanf("%f", &nota); // SINTAXE - falta virgula
                 adicionarEstudante(nome, nota);
                 break;
             case 2:
@@ -76,9 +76,9 @@ float calcularMedia() {
     int i;
     
     for(i = 0; i < numEstudantes; i++) {
-        soma = soma + estudantes[i].nota; //Não inicializa soma a 0
+        soma = soma + estudantes[i].nota; //EXECUÇÃO - Não inicializa soma a 0
     }    
-    return soma / numEstudantes; //Não checa media quando ha 0 estudantes (0/0)
+    return soma / numEstudantes; //EXECUÇÃO - Não checa media quando ha 0 estudantes (0/0)
 }
 
 // Lista todos os estudantes
@@ -98,6 +98,7 @@ void listarEstudantes() {
 
 // Liberta a memória alocada
 void libertarMemoria() {
-    printf("A libertar memória...\n");
+    printf("A libertar memória...\n"); // FUGA - Não ha fuga, função nao liberta memoria
+									   // mas não há memoria alocada dinamicamente no programa
     // (código de libertação omitido pelo programador original)
 }

@@ -26,8 +26,9 @@ int main(void)
 				printf("Área círculo (r=%.2lf): %.2lf\n", raio, areaCirculo(raio));
 				break;
 			case 2:
-				printf("Insira base e altura do retângulo: ");
+				printf("Insira a base do retângulo: ");
 				scanf("%lf", &base);
+				printf("Insira a altura do retângulo: ");
 				scanf("%lf", &altura);
 				printf("Área retângulo (%.2lfx%.2lf): %.2lf\n", base, altura,
 					areaRetangulo(base, altura));

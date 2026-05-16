@@ -82,9 +82,13 @@ char ReturnSimpleChar(char* c)
 
 int IfLetter(char c)
 {
+	//ASCII character
 	if(c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')
 		return 1;
- 	
+	//Potential Portuguese special character
+	if(c == '\303')
+		return 1;
+	//Other
 	return 0;
 }
 

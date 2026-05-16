@@ -1,0 +1,7 @@
+Questões identificadas:
+- Nomes das variáveis e funções não são descritivos
+- Dificil diferenciar entre função e variavel, uma vez que ambos sao apenas uma letra
+- "Nested" coisas: função p tem if dentro de if, sendo que podia ser apenas um if com duas condições
+- Mesmo os comentarios nao sao muito explicativos, a segunda funçao nao apenas imprime valores do array, mas imprime-os se positivos e se menores ou iguais um numero limite
+- No output do programa não se percebe o significado do resultado, da sequencia de numeros nem da contagem.
+-Declaração de todas as variaveis no inicio e depois chamar funções
