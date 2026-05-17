@@ -1,0 +1,4 @@
+Teste ponteiro nulo
+Teste comprimentos e classificação, buffer adequado
+Teste comprimentos e classificação, buffer não adequado(pequeno)
+---- TESTE ENCERRADO ----

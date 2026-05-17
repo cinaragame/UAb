@@ -1,0 +1,22 @@
+TAREFAS:
+1) ANALISAR A ESPECIFICAÇÃO (CONTRATO DA FUNÇÃO)
+- O QUE RECEBE:
+	int comprimento: comprimento da palavra-passe
+	pointer para string classe: string para armazenar força da palavra-passe
+- O QUE GARANTE:
+	Classificação da força da senha com base no seu comprimento
+- O QUE RETORNA:
+	0 (zero) em caso de sucesso na classificação
+	1 (um) em caso de erro (comprimento negativo ou pointer para NULL)
+2) Criou-se uma suíte de testes "main.c" que inclui a função "testar_senha()" que valida os comprimentos válidos e suas fronteiras, se as classificação atribuídas estão corretas; comprimento inválido (negativo); ponteiro inválido (NULL); e string "classe" pequena
+
+RESULTADOS:
+- PONTEIRO NULO: funciona corretamente
+- TESTE DE COMPRIMENTOS E CLASSIFICAÇÃO (BUFFER ADEQUADO): não funciona corretamente para senhas maiores do que 30 caracteres
+- TESTE BUFFFER DE TAMANHO NÃO ADEQUADO: não lida corretamente
+
+Erros identificados: código não lida corretamente com senhas maiores que 30 caracteres e código não lida corretamente com buffer não adequado. Os testes revelaram estes erros ao dar como input para a função variados comprimentos de senha (de -1 a 50) e ao comparar o output esperado para as classes com o output efetivo através da função 'strcmp' no caso do buffer de tamanho adequado e através da confirmação se o primeiro caracter da classe ('\0') foi alterado no caso do array classe de tamanho desadequado - sinalizando que o programa escreveu em memória não alocada.
+O primeiro erro foi resolvido removendo a restrição <= 30, assim o programa passa a classificar todas as senhas maiores ou iguais a 16 como "Muito Forte". O segundo erro não está identificado corretamente, pois a primeira condição lida corretamente com o comprimento < 0. Entretanto, o programa seria mais seguro (e eficiente) se após cada "if" retornasse o número correto. Assim evitaria que o programa continuasse com cálculos após chegar à conclusão correta, e também impedia que um caso não previsto fosse retornado como 1 (linha 15). Por isso adicionou-se o "return" a cada if, e o último return passou a retornar 0, servindo como guarda que sinaliza erro para qualquer cenário não previsto.
+Outra questão não prevista no código foi confirmar que o pointero passado para escrita da "classe" é grande o suficiente. Neste caso a função deveria receber também o tamanho reservado a partir do ponteiro (tamanho da array), e confirmar se é grande o suficiente para a classificação (mínimo 12, que é a maior string + \0). Para isto adicionei o parâmetro "int tamanho_array_classe" à função e a condição de retorno 0 caso seja menor que 12) - isto, entretanto, fez com que a suíte de testes não pudesse ser automaticamente reutilizada, uma vez que os parâmetros que a função recebe e, consequentemente, seu funcionamento, foram modificados.
+
+QUESTÃO DE REFLEXÃO: Se em vez de printf utilizasse o assert, o teste seria abortado na primeira falha, não sendo printados os próximos erros. A diferença entre as duas abordagens é se o objetivo é identificar e resolver o primeiro bug que aparece ou gerar um relatório completo de todos os pontenciais bugs no código.'

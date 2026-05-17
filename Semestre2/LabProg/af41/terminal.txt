@@ -1,0 +1,75 @@
+Teste ponteiro nulo
+Teste comprimentos e classificação, buffer adequado
+Erro: comprimento = 31, classe = 
+Erro: comprimento = 32, classe = 
+Erro: comprimento = 33, classe = 
+Erro: comprimento = 34, classe = 
+Erro: comprimento = 35, classe = 
+Erro: comprimento = 36, classe = 
+Erro: comprimento = 37, classe = 
+Erro: comprimento = 38, classe = 
+Erro: comprimento = 39, classe = 
+Erro: comprimento = 40, classe = 
+Erro: comprimento = 41, classe = 
+Erro: comprimento = 42, classe = 
+Erro: comprimento = 43, classe = 
+Erro: comprimento = 44, classe = 
+Erro: comprimento = 45, classe = 
+Erro: comprimento = 46, classe = 
+Erro: comprimento = 47, classe = 
+Erro: comprimento = 48, classe = 
+Erro: comprimento = 49, classe = 
+Erro: comprimento = 50, classe = 
+Teste comprimentos e classificação, buffer não adequado(pequeno)
+Erro: comprimento = 0, classe = Fraca
+Erro: comprimento = 1, classe = Fraca
+Erro: comprimento = 2, classe = Fraca
+Erro: comprimento = 3, classe = Fraca
+Erro: comprimento = 4, classe = Media
+Erro: comprimento = 5, classe = Media
+Erro: comprimento = 6, classe = Media
+Erro: comprimento = 7, classe = Media
+Erro: comprimento = 8, classe = Forte
+Erro: comprimento = 9, classe = Forte
+Erro: comprimento = 10, classe = Forte
+Erro: comprimento = 11, classe = Forte
+Erro: comprimento = 12, classe = Forte
+Erro: comprimento = 13, classe = Forte
+Erro: comprimento = 14, classe = Forte
+Erro: comprimento = 15, classe = Forte
+Erro: comprimento = 16, classe = Muito Forte
+Erro: comprimento = 17, classe = Muito Forte
+Erro: comprimento = 18, classe = Muito Forte
+Erro: comprimento = 19, classe = Muito Forte
+Erro: comprimento = 20, classe = Muito Forte
+Erro: comprimento = 21, classe = Muito Forte
+Erro: comprimento = 22, classe = Muito Forte
+Erro: comprimento = 23, classe = Muito Forte
+Erro: comprimento = 24, classe = Muito Forte
+Erro: comprimento = 25, classe = Muito Forte
+Erro: comprimento = 26, classe = Muito Forte
+Erro: comprimento = 27, classe = Muito Forte
+Erro: comprimento = 28, classe = Muito Forte
+Erro: comprimento = 29, classe = Muito Forte
+Erro: comprimento = 30, classe = Muito Forte
+Erro: comprimento = 31, classe = 
+Erro: comprimento = 32, classe = 
+Erro: comprimento = 33, classe = 
+Erro: comprimento = 34, classe = 
+Erro: comprimento = 35, classe = 
+Erro: comprimento = 36, classe = 
+Erro: comprimento = 37, classe = 
+Erro: comprimento = 38, classe = 
+Erro: comprimento = 39, classe = 
+Erro: comprimento = 40, classe = 
+Erro: comprimento = 41, classe = 
+Erro: comprimento = 42, classe = 
+Erro: comprimento = 43, classe = 
+Erro: comprimento = 44, classe = 
+Erro: comprimento = 45, classe = 
+Erro: comprimento = 46, classe = 
+Erro: comprimento = 47, classe = 
+Erro: comprimento = 48, classe = 
+Erro: comprimento = 49, classe = 
+Erro: comprimento = 50, classe = 
+---- TESTE ENCERRADO ----
