@@ -1,0 +1,24 @@
+\a - som do pc
+\b - deleta caracter anterior
+\c - NAN: unknown escape sequence
+\d - NAN: unknown escape sequence
+\e - deleta caracter da frente
+\f - coloca caracter seguinte na mesma posição vertical, mas na linha a seguir :o
+\g - NAN: unknown escape sequence
+\h - NAN: unknown escape sequence
+\i - NAN: unknown escape sequence
+\j - NAN: unknown escape sequence
+\k - NAN: unknown escape sequence
+\l - NAN: unknown escape sequence
+\m - NAN: unknown escape sequence
+\n - new line
+\o - NAN: diferente: \o not followed by { + embedded \0 in format
+\r - substitui as letras do inicio da string pelas letras que vem a seguir (se for so uma letra a seguir, substitui so a primeira, se forem duas letras, suubstitui as duas primeiras e etc)
+\t - tab
+\u - NAN: diferente: incomplete universal caracter name \u
+\v - same as \f
+\w - NAN: unknown escape sequence
+\x - NAN: diferente:\x used with no following hex digits
+\y - NAN: unknown escape sequence
+\z - NAN: unknown escape sequence
+
