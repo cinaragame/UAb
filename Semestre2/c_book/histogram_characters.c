@@ -6,17 +6,6 @@
 #define WORD_OUT		0
 
 /*
-	Returns value inserted if lower than MAX VALUE, returns MAX VALUE if higher
-	Parameters: size (value to return); max_size (MAX VALUE)
-*/
-int number_threshold(int max_size, int size)
-{
-	if(size >= max_size)
-		return max_size;
-	return size;
-}
-
-/*
 	Returns 1 int is a digit between 0-9, a-z, A-Z
 	Returns 0 otherwise
 */
@@ -29,7 +18,7 @@ int is_digit(int c)
 }
 
 /*
-	Makes a historgram for the number of characters of the words in a text
+	Makes a historgram for accounting use of each character in a text
 */
 int main()
 {
