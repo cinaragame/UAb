@@ -2,8 +2,6 @@
 
 #define CHAR_COUNT		36 // (0-9) + (a-z OR A-Z)
 #define NUMBER_DIGITS	10
-#define WORD_IN			1
-#define WORD_OUT		0
 
 /*
 	Returns 1 int is a digit between 0-9, a-z, A-Z
