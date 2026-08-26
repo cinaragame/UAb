@@ -4,7 +4,6 @@
 #define TAB_STOP 8 /* tab size */
 
 int getLine(char line[], int max_size);
-int findFirstChar(int position, char line[], const char c);
 int blanksForTabstop(int position, int tab_size);
 
 int main(void)
@@ -12,7 +11,7 @@ int main(void)
 	char	input[MAX_LEN];		/* arrays for input (with tab) */
 	char	output[MAX_LEN];	/* arrays for (with tabs substituted by blanks) */
 	int		in_cnt, out_cnt;	/* input and output arrays char counter */	
-	int		blanks, in_size;	/* blanks needed and input array size */
+	int		blanks;				/* blanks needed to substitute tab */
 	
 	/* while valid line of input */
 	while(getLine(input, MAX_LEN))
@@ -66,24 +65,6 @@ int getLine(char line[], int max_size)
 	}
 	line[i] = '\0';
 	return i;
-}
-
-/* finds the first ocurrence of tab in an array
- * parameters:	start position for search in array
- * 				array to search
- * 				character to search
- * return:		position of first occurence
- * 				-1 if no ocurrence
- */
-int findFirstChar(int position, char line[], const char c)
-{
-	while(line[position] != '\0')
-	{
-		if(line[position] == c)
-			return position;
-		position++;
-	}
-	return -1;
 }
 
 /* calculates number of blank spaces to reach next tab stop
