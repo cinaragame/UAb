@@ -1,0 +1,3 @@
+Os testes de unidade falharam nas funções 'aplicar_bonus' e 'aplicar_penalizacao' em duas situações: receção de parâmetros inteiros negativos & lidar com outputs não inteiros. Não foi testada a capacidade de lidar com inputs não inteiros.
+Como o exercício proposto afirma que as funções passariam nos testes de unidade, não sendo o objetivo avaliar as funções individualmente, optou-se por manter as funções como estão e utilizar apenas entradas simples que não gerem problemas - assim, será possível focar no objetivo do exercício: testes de integração.
+Optou-se por manter o teste original desenvolvido como comentário, implementando apenas os testes indicados no exercício.
