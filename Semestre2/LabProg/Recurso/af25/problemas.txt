@@ -1,0 +1,27 @@
+Problema:	interface modulo_suspeito não inclui guard clauses #ifndef #define #endif
+Porquê:	pode incorrer em redefinições de macros, variáveis ou funções declaradas caso esta interface seja incluida em mais de um ficheiro que faça parte da compilação do programa (o que é o cenário mais provavel em programas de media a grande dimensão) 
+Correção: incluir no inicio do ficheiro #ifndef MODULO_SUSPEITO_H #define MODULO_SUSPEITO_H e ao final #endif
+
+Problema: implementação de modulo_suspeito não inclui sua propria interface
+Porquê: incluir propria interface garante a coerencia entre as declarações na interface e a implementação (deteta-se erros na fase de pre-processamento)
+Correção:adicionar ao inicio do ficheiro: #include "modulo_suspeito.h"
+
+Problema: definição de uma macro com nome genérico MAX
+Porquê: a utilização de nomes genéricos dificulta a manutenção de codigo, além disto, sendo esta uma macro global, corre-se o risco de incorrer em multiplas definições, uma vez que outro modulo pode tambem definir uma macro "MAX"
+Correção: definir macros dentro do ficheiro de implementação com nomes especificos (exemplo "#define MAX_BUFFER_SUSPEITO 100"
+
+Problema: declaração de multiplos elementos nao utilizados, tanto globais quanto locais, como a macro MAX, a array BUFFER, a static int privada e a int publica
+Porquê: manter no codigo elementos nunca utilizados torna sua leitura mais confusa por ter "lixo visual"
+Correção: exclusão destes elementos do código
+
+Problema: int publica não está declarada na interface do modulo
+Porquê: é um problema porque nao cumpre sua intenção em ser uma variável global
+Correção: adicionar "extern int publica;" ao ficheiro de interface
+
+Problema: função helper nao declarada como static
+Porquê: função funciona como auxiliar interna ao módulo, nao estando exposta na interface e sendo chamada apenas por funções de dentro do módulo, entretanto, a falta de inclusão de "static" na sua declaração falha em garantir seu real encapsulamento, podendo expo-la ao uso de outros modulos
+Correção: adicionar static a frente da declaração da função no ficheiro de implementação
+
+
+
+
