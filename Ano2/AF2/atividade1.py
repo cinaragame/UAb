@@ -1,3 +1,7 @@
+# ===================================================================================
+# ETAPA 1: Programa controla entradas e saídas em parque de estacionamentos,
+# liberando a entrada para carros apenas caso hajam vagas disponíveis
+# ===================================================================================
 from typing import Final
 
 #quantidade de vagas existentes
@@ -20,7 +24,7 @@ def entrada_carro():
         if lugares_ocupados == MAX_LUGARES:
             estacionamento_aberto = False
     else:
-        print(f"Entrada não permitida: Estacionamento cheio, volte mais tarde!")
+        print("Entrada não permitida, volte mais tarde!")
 
 
 # decrementa a variavel lugares_ocupados quando sai um carro do estacionamento

@@ -1,3 +1,11 @@
+# ===================================================================================
+# ETAPA 2: Para que se possam realizar manutenções pontuais no estacionamento,
+# um programador implementou uma função que permite a administração fechar o parque
+# de estacionamento independentemente de sua lotação.
+# BUG: o programa funciona bem para bloquear novas entradas, entretanto, caso um carro
+# que já estivesse dentro do estacionamento saia, a função saida_carro() volta a abrir
+# o estacionamento para novas entradas automaticamente
+# ===================================================================================
 from typing import Final
 
 #quantidade de vagas existentes
@@ -8,7 +16,8 @@ MAX_LUGARES: Final = 5
 lugares_ocupados = 0
 estacionamento_aberto = True
 
-#incrementa variavel lugares_ocupados quando entra um novo carro no estacionamento
+
+# incrementa variavel lugares_ocupados quando entra um novo carro no estacionamento
 def entrada_carro():
     global lugares_ocupados
     global estacionamento_aberto
@@ -19,9 +28,10 @@ def entrada_carro():
         if lugares_ocupados == MAX_LUGARES:
             estacionamento_aberto = False
     else:
-        print(f"Entrada não permitida: Estacionamento cheio, volte mais tarde!")
+        print("Entrada não permitida, volte mais tarde!")
 
-#decrementa a variavel lugares_ocupados quando sai um carro do estacionamento
+
+# decrementa a variavel lugares_ocupados quando sai um carro do estacionamento
 def saida_carro():
     global lugares_ocupados
     global estacionamento_aberto
@@ -34,14 +44,12 @@ def saida_carro():
         estacionamento_aberto = True
         print(f"Saída registada: Volte sempre! ({lugares_ocupados}/{MAX_LUGARES})")
 
-# com o funcionamento diário do estacionamento, percebe-se que é necessário incluir no sistema
-# a opção de fechar o estacionamento, acionada manualmente de forma pontual, seja para a
-# realização de manutenções urgentes, seja para impedir novas entradas, garantindo vagas para
-# os CEOs que vêm do Dubai
-def fechar_estacionamento_manualmente():
+# tranca o estacionamento, nao permitindo novas entradas
+def trancar_estacionamento():
     global estacionamento_aberto
 
     estacionamento_aberto = False
+    print("Estacionamento tracado para novas entradas!")
 
 
 #execução do programa
@@ -49,9 +57,8 @@ saida_carro()                       #tentativa de registar saída sem carros no 
 entrada_carro()                     #caso normal: entrada aceita
 entrada_carro()                     #caso normal: entrada aceita
 entrada_carro()                     #caso normal: entrada aceita
-fechar_estacionamento_manualmente() #encerrado manualmente para manutenção
+trancar_estacionamento() #encerrado manualmente para manutenção
 entrada_carro()                     #caso normal: entrada negada
 saida_carro()                       #caso normal: saída
-entrada_carro()                     #caso de erro: entrada deveria ser negada
 entrada_carro()                     #caso de erro: entrada deveria ser negada
 entrada_carro()                     #caso de erro: entrada deveria ser negada
